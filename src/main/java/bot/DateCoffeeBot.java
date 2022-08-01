@@ -1,11 +1,12 @@
 package bot;
 
 import bot.config.BotConfig;
+import java.util.Queue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import bot.service.impl.TelegramServiceImpl;
@@ -40,11 +41,13 @@ public class DateCoffeeBot extends TelegramLongPollingBot {
     if (request.hasMessage()) {
       String text = request.getMessage().getText();
       Long chatId = request.getMessage().getChatId();
-      try {
-        execute(service.createResponseMessage(chatId, text));
-      } catch (TelegramApiException e) {
-        logger.error(e.getMessage());
-      }
+        Queue<SendMessage> outputMessages = service.createResponseMessages(chatId, text);
+        outputMessages.forEach(message -> {
+          try {
+            executeAsync(message);
+          } catch (TelegramApiException e) {
+            logger.error(e.getMessage());
+          }});
     }
   }
 }

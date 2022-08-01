@@ -1,5 +1,6 @@
 package bot.service;
 
+import java.util.Queue;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 public interface TelegramService {
@@ -8,8 +9,8 @@ public interface TelegramService {
    * Отправка сообщения
    * @param chatId - id чата, куда отправлять сообщение
    * @param text - сообщение
-   * @return Обьект SendMessage для отправки
+   * @return Сообщения для отправки в очереди
    */
 
-  SendMessage createResponseMessage(Long chatId, String text);
+  Queue<SendMessage> createResponseMessages(Long chatId, String text);
 }

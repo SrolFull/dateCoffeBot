@@ -4,6 +4,8 @@ import bot.models.core.ExecutableCommand;
 import bot.models.core.exceptions.UndefinedCommandException;
 import bot.models.enums.Commands;
 import bot.service.CommandService;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,16 +21,20 @@ public class CommandServiceImpl implements CommandService {
   }
 
   @Override
-  public void executeCommand(SendMessage response, String commandName) {
+  public Queue<SendMessage> executeCommand(Long chatId, String text) {
+    Queue<SendMessage> outputMessages = new PriorityQueue<>();
     try {
-      ExecutableCommand command = defineCommand(commandName);
+      ExecutableCommand command = defineCommand(text);
       logger.info(String.format("Старт выполнение комманды: %s", command.getCommandName()));
-      String message = command.execute();
-      response.setText(message);
+      outputMessages = command.execute(chatId, text);
       logger.info(String.format("Комманда: %s, выполнена", command.getCommandName()));
     } catch (UndefinedCommandException e) {
       logger.info("Неизвестная комманда: " + e.getName());
-      response.setText("Неизвестная комманда: " + e.getName());
+      SendMessage sendMessage = new SendMessage();
+      sendMessage.setChatId(chatId);
+      sendMessage.setText("Неизвестная комманда: " + e.getName());
+      outputMessages.add(sendMessage);
     }
+    return outputMessages;
   }
 }
