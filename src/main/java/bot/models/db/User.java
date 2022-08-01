@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 import models.enums.Goals;
-import models.enums.WorkingPlaces;
+import bot.models.enums.WorkingPlaces;
 
 @Entity
 @Getter

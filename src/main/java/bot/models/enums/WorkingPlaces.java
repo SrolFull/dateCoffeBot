@@ -1,4 +1,4 @@
-package models.enums;
+package bot.models.enums;
 
 public enum WorkingPlaces {
   ENGELSA("Энгельса 36"),
