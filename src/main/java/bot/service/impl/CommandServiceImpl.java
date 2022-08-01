@@ -4,6 +4,8 @@ import bot.models.core.ExecutableCommand;
 import bot.models.core.exceptions.UndefinedCommandException;
 import bot.models.enums.Commands;
 import bot.service.CommandService;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import org.slf4j.Logger;
@@ -21,8 +23,8 @@ public class CommandServiceImpl implements CommandService {
   }
 
   @Override
-  public Queue<SendMessage> executeCommand(Long chatId, String text) {
-    Queue<SendMessage> outputMessages = new PriorityQueue<>();
+  public List<SendMessage> executeCommand(Long chatId, String text) {
+    List<SendMessage> outputMessages = new ArrayList<>();
     try {
       ExecutableCommand command = defineCommand(text);
       logger.info(String.format("Старт выполнение комманды: %s", command.getCommandName()));

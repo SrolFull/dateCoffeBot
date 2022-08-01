@@ -2,6 +2,8 @@ package bot.models.core.commands;
 
 import bot.models.core.ExecutableCommand;
 import bot.models.enums.Commands;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import org.slf4j.Logger;
@@ -21,15 +23,15 @@ public class MeetingCommand extends ExecutableCommand {
   }
 
   @Override
-  public Queue<SendMessage> execute(Long chatId, String text) {
-    Queue<SendMessage> queue = new PriorityQueue<>();
+  public List<SendMessage> execute(Long chatId, String text) {
+    List<SendMessage> list = new ArrayList<>();
 
     SendMessage startMessage = new SendMessage();
     startMessage.setChatId(chatId);
     startMessage.setText(Commands.MEETING.getCommandText());;
 
-    queue.add(startMessage);
-    return queue;
+    list.add(startMessage);
+    return list;
   }
 
   @Override

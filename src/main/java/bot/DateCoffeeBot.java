@@ -1,6 +1,7 @@
 package bot;
 
 import bot.config.BotConfig;
+import java.util.List;
 import java.util.Queue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,7 @@ public class DateCoffeeBot extends TelegramLongPollingBot {
     if (request.hasMessage()) {
       String text = request.getMessage().getText();
       Long chatId = request.getMessage().getChatId();
-        Queue<SendMessage> outputMessages = service.createResponseMessages(chatId, text);
+        List<SendMessage> outputMessages = service.createResponseMessages(chatId, text);
         outputMessages.forEach(message -> {
           try {
             executeAsync(message);

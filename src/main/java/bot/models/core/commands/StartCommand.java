@@ -2,6 +2,8 @@ package bot.models.core.commands;
 
 import bot.models.core.ExecutableCommand;
 import bot.models.enums.Commands;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import org.slf4j.Logger;
@@ -23,22 +25,22 @@ public class StartCommand extends ExecutableCommand {
   }
 
   @Override
-  public Queue<SendMessage> execute(Long chatId, String text) {
-    Queue<SendMessage> queue = new PriorityQueue<>();
+  public List<SendMessage> execute(Long chatId, String text) {
+    List<SendMessage> list = new ArrayList<>();
 
     SendMessage startMessage = new SendMessage();
     startMessage.setChatId(chatId);
     startMessage.setText(Commands.START.getCommandText());
 
-    queue.add(startMessage);
+    list.add(startMessage);
 
     SendMessage greetingMessage = new SendMessage();
     greetingMessage.setChatId(chatId);
     greetingMessage.setText(Commands.MEETING.getCommandText());
 
-    queue.add(greetingMessage);
+    list.add(greetingMessage);
 
-    return queue;
+    return list;
   }
 
   @Override
