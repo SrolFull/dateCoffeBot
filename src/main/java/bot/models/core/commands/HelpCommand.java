@@ -4,19 +4,17 @@ import bot.models.core.ExecutableCommand;
 import bot.models.enums.Commands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
-@Component
-public class StartCommand extends ExecutableCommand {
+public class HelpCommand extends ExecutableCommand {
 
   @Override
   public String getCommandName() {
-    return Commands.START.getName();
+    return Commands.HELP.getName();
   }
 
   @Override
   public Logger getLogger() {
-    return LoggerFactory.getLogger(StartCommand.class);
+    return LoggerFactory.getLogger(HelpCommand.class);
   }
 
   @Override

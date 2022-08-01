@@ -1,11 +1,15 @@
 package bot.models.core;
 
+import bot.service.CommandService;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
 public abstract class ExecutableCommand {
+ public Logger logger = getLogger();
+ @Autowired
+ CommandService commandService;
+
  public abstract String getCommandName();
  public abstract Logger getLogger();
- public abstract void execute();
-
-
-
+ public abstract String execute();
 }
