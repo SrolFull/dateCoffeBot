@@ -21,6 +21,12 @@ public class StartCommand extends ExecutableCommand {
 
   @Override
   public String execute() {
-    return String.format("Выполняем комманду: %s", getCommandName());
+    String message =  Commands.START.getCommandText();
+    return String.format("%s \n %s", message, getNextCommand().execute());
+  }
+
+  @Override
+  public ExecutableCommand getNextCommand() {
+    return new MeetingCommand();
   }
 }

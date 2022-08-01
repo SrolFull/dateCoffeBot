@@ -5,11 +5,11 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class ExecutableCommand {
- public Logger logger = getLogger();
  @Autowired
  CommandService commandService;
 
  public abstract String getCommandName();
  public abstract Logger getLogger();
  public abstract String execute();
+ public abstract ExecutableCommand getNextCommand();
 }

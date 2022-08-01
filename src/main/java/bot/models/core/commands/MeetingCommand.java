@@ -5,21 +5,21 @@ import bot.models.enums.Commands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HelpCommand extends ExecutableCommand {
+public class MeetingCommand extends ExecutableCommand {
 
   @Override
   public String getCommandName() {
-    return Commands.HELP.getName();
+    return Commands.MEETING.getName();
   }
 
   @Override
   public Logger getLogger() {
-    return LoggerFactory.getLogger(HelpCommand.class);
+    return LoggerFactory.getLogger(MeetingCommand.class);
   }
 
   @Override
   public String execute() {
-    return Commands.HELP.getCommandText();
+    return Commands.MEETING.getCommandText();
   }
 
   @Override
