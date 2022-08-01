@@ -1,0 +1,1 @@
+worker : java -jar target/dateCoffeeBot-1.0

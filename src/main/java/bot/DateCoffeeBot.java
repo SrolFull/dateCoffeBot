@@ -17,11 +17,11 @@ public class DateCoffeeBot extends TelegramLongPollingBot {
   private final BotConfig config;
   private final TelegramServiceImpl service;
 
-  @Autowired
   public DateCoffeeBot(BotConfig config,
       TelegramServiceImpl service) {
     this.config = config;
     this.service = service;
+    logger.info("Бот успешно запущен...");
   }
 
 
@@ -37,12 +37,14 @@ public class DateCoffeeBot extends TelegramLongPollingBot {
 
   @Override
   public void onUpdateReceived(Update request) {
-    String message = request.getMessage().getText();
-    Long chatId = request.getMessage().getChatId();
-    try {
-      execute(service.createResponseMessage(chatId, message));
-    } catch (TelegramApiException e) {
-      logger.error(e.getMessage());
+    if (request.hasMessage()) {
+      String text = request.getMessage().getText();
+      Long chatId = request.getMessage().getChatId();
+      try {
+        execute(service.createResponseMessage(chatId, text));
+      } catch (TelegramApiException e) {
+        logger.error(e.getMessage());
+      }
     }
   }
 }
