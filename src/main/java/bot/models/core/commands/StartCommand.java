@@ -21,8 +21,7 @@ public class StartCommand extends ExecutableCommand {
 
   @Override
   public String execute() {
-    String message =  Commands.START.getCommandText();
-    return String.format("%s \n %s", message, getNextCommand().execute());
+    return Commands.START.getCommandText();
   }
 
   @Override
