@@ -26,5 +26,4 @@ hs_err_pid*
 /target/generated-sources
 /target/maven-archiver
 /target/maven-status
-/target/dateCoffeBot-1.0.jar.original
-bot/bot.properties
+/target/dateCoffeeBot-1.0.jar.original
