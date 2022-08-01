@@ -1,1 +1,1 @@
-worker: java -Dserver.port=$PORT -jar target/dateCoffeeBot-1.0.jar
+worker: java -jar target/dateCoffeeBot-1.0.jar
