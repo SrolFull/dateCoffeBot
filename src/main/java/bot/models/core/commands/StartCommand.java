@@ -4,8 +4,6 @@ import bot.models.core.ExecutableCommand;
 import bot.models.enums.Commands;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

@@ -4,14 +4,11 @@ import bot.models.core.ExecutableCommand;
 import bot.models.enums.Commands;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 public class MeetingCommand extends ExecutableCommand {
-
   @Override
   public String getCommandName() {
     return Commands.MEETING.getName();
@@ -37,5 +34,11 @@ public class MeetingCommand extends ExecutableCommand {
   @Override
   public ExecutableCommand getNextCommand() {
     return null;
+  }
+
+
+  @Override
+  public ExecutableCommand getPreviousCommand() {
+    return Commands.START.getCommand();
   }
 }

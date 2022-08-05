@@ -13,5 +13,10 @@ public abstract class ExecutableCommand {
  public abstract String getCommandName();
  public abstract Logger getLogger();
  public abstract List<SendMessage> execute(Long chatId, String commandText);
- public abstract ExecutableCommand getNextCommand();
+ public ExecutableCommand getNextCommand() {
+  return null;
+ }
+ public ExecutableCommand getPreviousCommand(){
+  return null;
+ }
 }
