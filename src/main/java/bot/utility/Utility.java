@@ -1,0 +1,29 @@
+package bot.utility;
+
+import bot.models.core.ExecutableCommand;
+import bot.models.core.exceptions.UndefinedCommandException;
+import bot.models.enums.Commands;
+import java.util.Collection;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class Utility {
+  private static final Logger logger = LoggerFactory.getLogger(Utility.class);
+
+  public static ExecutableCommand convertStringCommandToObjExecutableCommand(String commandName) {
+    try {
+      return Commands.getCommandByName(commandName);
+    } catch (UndefinedCommandException exception) {
+      logger.info("Не удалось преобразовать строковую комманду в обьект \n");
+      logger.info("Вернули комманду старт");
+      return Commands.START.getCommand();
+    }
+  }
+
+  public static Collection<ExecutableCommand> convertStringCommandsToObjExecutableCommands(Collection<String> commandsString) {
+    return commandsString.stream()
+        .map(Utility::convertStringCommandToObjExecutableCommand)
+        .collect(Collectors.toList());
+  }
+}

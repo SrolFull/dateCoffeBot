@@ -2,9 +2,9 @@ package bot;
 
 import bot.config.BotConfig;
 import java.util.List;
-import java.util.Queue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -17,12 +17,13 @@ public class DateCoffeeBot extends TelegramLongPollingBot {
   private final Logger logger = LoggerFactory.getLogger(DateCoffeeBot.class);
 
   private final BotConfig config;
-  private final TelegramServiceImpl service;
+  private final TelegramServiceImpl telegramService;
+  @Autowired
 
   public DateCoffeeBot(BotConfig config,
-      TelegramServiceImpl service) {
+      TelegramServiceImpl telegramService) {
     this.config = config;
-    this.service = service;
+    this.telegramService = telegramService;
     logger.info("Бот успешно запущен...");
   }
 
@@ -42,7 +43,7 @@ public class DateCoffeeBot extends TelegramLongPollingBot {
     if (request.hasMessage()) {
       String text = request.getMessage().getText();
       Long chatId = request.getMessage().getChatId();
-        List<SendMessage> outputMessages = service.createResponseMessages(chatId, text);
+        List<SendMessage> outputMessages = telegramService.createResponseMessages(chatId, text);
         outputMessages.forEach(message -> {
           try {
             executeAsync(message);

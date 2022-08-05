@@ -26,4 +26,5 @@ public class User {
   private Goals goals;
   private WorkingPlaces workingPlaces;
   private Long chatId;
+  private String currentCommand;
 }
