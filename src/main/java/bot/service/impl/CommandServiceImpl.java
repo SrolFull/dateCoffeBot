@@ -18,8 +18,12 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 public class CommandServiceImpl implements CommandService {
   Logger logger = LoggerFactory.getLogger(CommandServiceImpl.class);
 
-  @Autowired
+  final
   PostHandler postHandler;
+
+  public CommandServiceImpl(PostHandler postHandler) {
+    this.postHandler = postHandler;
+  }
 
   @Override
   public ExecutableCommand defineCommand(String commandName) throws UndefinedCommandException {

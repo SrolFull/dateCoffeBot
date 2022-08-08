@@ -10,5 +10,4 @@ public class BotHandler {
   private UserDBService userDBService;
   @Autowired
   private PostHandler postHandler;
-
 }

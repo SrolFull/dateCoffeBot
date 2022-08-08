@@ -6,7 +6,6 @@ import bot.models.enums.MessageType;
 import bot.service.impl.CommandServiceImpl;
 import java.util.Observable;
 import java.util.Observer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -15,14 +14,17 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Service
 public class BotWorker implements Observer {
 
-  @Autowired
-  private PostHandler postHandler;
+  private final PostHandler postHandler;
 
-  @Autowired
-  private ApplicationContext context;
+  private final CommandServiceImpl commandService;
 
-  @Autowired
-  private CommandServiceImpl commandService;
+  private final ApplicationContext context;
+
+  public BotWorker(PostHandler postHandler, ApplicationContext context) {
+    this.postHandler = postHandler;
+    this.commandService = new CommandServiceImpl(postHandler);
+    this.context = context;
+  }
 
   @Override
   public void update(Observable o, Object arg) {
@@ -34,9 +36,9 @@ public class BotWorker implements Observer {
     } else {
       SendMessage sendMessage = postHandler.getOutputMessage();
       new Thread(() -> {
-        DateCoffeeBot coffeeBot = context.getBean(DateCoffeeBot.class);
         try {
-          coffeeBot.execute(sendMessage);
+          DateCoffeeBot dateCoffeeBot = context.getBean(DateCoffeeBot.class);
+          dateCoffeeBot.execute(sendMessage);
         } catch (TelegramApiException e) {
           e.printStackTrace();
         }
