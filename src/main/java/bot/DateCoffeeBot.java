@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
 @Scope("singleton")
@@ -39,7 +40,14 @@ public class DateCoffeeBot extends TelegramLongPollingBot {
   @Override
   public void onUpdateReceived(Update request) {
     if (request.hasMessage()) {
-       botHandler.handleMessage(request.getMessage());
+       botHandler.handleMessage(request.getMessage())
+           .forEach(message -> {
+             try {
+               execute(message);
+             } catch (TelegramApiException e) {
+               e.printStackTrace();
+             }
+           });
     }
   }
 }

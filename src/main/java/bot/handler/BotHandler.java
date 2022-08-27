@@ -25,53 +25,38 @@ public class BotHandler {
   private UserDBService userDBService;
   @Autowired
   private CommandServiceImpl commandService;
-  @Autowired
-  private DateCoffeeBot dateCoffeeBot;
-
   private final Logger logger = LoggerFactory.getLogger(BotHandler.class);
 
 
   //Ждём ли ответа от пользователя на вопрос
   public static Map<Long, Boolean> isWaitingQuestionAnswer = new HashMap<>();
 
-  public void handleMessage(Message message) {
+  public List<SendMessage> handleMessage(Message message) {
     InputMessage inputMessage = new InputMessage(message.getChatId(), message.getText());
     Boolean isWaitingAnswer = isWaitingQuestionAnswer.getOrDefault(inputMessage.getChatId(), false);
     if (isWaitingAnswer != null && isWaitingAnswer) {
-      handleUserAnswer(inputMessage);
+      return handleUserAnswer(inputMessage);
     } else {
-      handleUserCommand(inputMessage);
+      return handleUserCommand(inputMessage);
     }
   }
 
   @SneakyThrows
-  private void handleUserAnswer(InputMessage inputMessage) {
+  private List<SendMessage> handleUserAnswer(InputMessage inputMessage) {
     ExecutableCommand lastCommand = userDBService.getUserLastCommand(inputMessage.getChatId());
     Commands command = Commands.getCommandByName(lastCommand.getCommandName());
     commandService.saveAnswer(command, inputMessage);
     ExecutableCommand nextCommand = lastCommand.getNextCommand();
-    List<SendMessage> response = commandService.executeCommand(inputMessage, nextCommand);
-    sendMessages(response);
+    return commandService.executeCommand(inputMessage, nextCommand);
   }
 
-  private void handleUserCommand(InputMessage inputMessage) {
+  private List<SendMessage> handleUserCommand(InputMessage inputMessage) {
       try {
         ExecutableCommand executableCommand = commandService.defineCommand(inputMessage.getText());
         userDBService.updateUserLastCommand(inputMessage.getChatId(), executableCommand);
       } catch (UndefinedCommandException exception) {
         logger.debug("Не удалось определить комманду");
       }
-      List<SendMessage> response = commandService.executeCommand(inputMessage);
-      sendMessages(response);
-  }
-
-  private void sendMessages(List<SendMessage> sendMessages) {
-    sendMessages.forEach(message -> {
-      try {
-        dateCoffeeBot.execute(message);
-      } catch (TelegramApiException exception) {
-        logger.warn("Не удалось отправить сообщение," + exception.getMessage());
-      }
-    });
+    return commandService.executeCommand(inputMessage);
   }
 }
