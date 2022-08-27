@@ -4,6 +4,7 @@ import bot.handler.BotHandler;
 import bot.models.core.ExecutableCommand;
 import bot.models.enums.Commands;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,15 +34,13 @@ public class MeetingCommand extends ExecutableCommand {
 
   @Override
   public List<SendMessage> execute(Long chatId, String text) {
-    List<SendMessage> list = new ArrayList<>();
     BotHandler.isWaitingQuestionAnswer.put(chatId, isNeedWaitingResponse());
 
-    SendMessage startMessage = new SendMessage();
-    startMessage.setChatId(chatId);
-    startMessage.setText(Commands.MEETING.getCommandText());;
+    SendMessage sendMessage = new SendMessage();
+    sendMessage.setChatId(chatId);
+    sendMessage.setText(Commands.MEETING.getCommandText());
 
-    list.add(startMessage);
-    return list;
+    return Collections.singletonList(sendMessage);
   }
 
   @Override

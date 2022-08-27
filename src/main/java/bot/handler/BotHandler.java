@@ -54,7 +54,7 @@ public class BotHandler {
       try {
         ExecutableCommand executableCommand = commandService.defineCommand(inputMessage.getText());
         userDBService.updateUserLastCommand(inputMessage.getChatId(), executableCommand);
-        response = new LinkedList<>(commandService.executeCommand(inputMessage));
+        response.addAll(commandService.executeCommand(inputMessage));
         if (!isWaitingQuestionAnswer.get(inputMessage.getChatId()) && executableCommand.getNextCommand() != null) {
           inputMessage.setText(executableCommand.getNextCommand().getCommandName());
           response.addAll(handleUserCommand(inputMessage));
