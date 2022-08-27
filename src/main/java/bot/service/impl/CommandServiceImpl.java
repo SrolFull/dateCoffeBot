@@ -1,11 +1,11 @@
 package bot.service.impl;
 
-import bot.handler.PostHandler;
 import bot.models.core.ExecutableCommand;
 import bot.models.core.InputMessage;
 import bot.models.core.exceptions.UndefinedCommandException;
 import bot.models.enums.Commands;
 import bot.service.CommandService;
+import bot.service.UserDBService;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -18,20 +18,16 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 public class CommandServiceImpl implements CommandService {
   Logger logger = LoggerFactory.getLogger(CommandServiceImpl.class);
 
-  final
-  PostHandler postHandler;
-
-  public CommandServiceImpl(PostHandler postHandler) {
-    this.postHandler = postHandler;
-  }
+  @Autowired
+  private UserDBService userDBService;
 
   @Override
   public ExecutableCommand defineCommand(String commandName) throws UndefinedCommandException {
-    return Commands.getCommandByName(commandName);
+    return Commands.getExecutableCommandByName(commandName);
   }
 
   @Override
-  public void executeCommand(InputMessage inputMessage) {
+  public List<SendMessage> executeCommand(InputMessage inputMessage) {
     List<SendMessage> outputMessages = new ArrayList<>();
     try {
       ExecutableCommand command = defineCommand(inputMessage.getText());
@@ -45,6 +41,25 @@ public class CommandServiceImpl implements CommandService {
       sendMessage.setText("Неизвестная комманда: " + e.getName());
       outputMessages.add(sendMessage);
     }
-    postHandler.addOutputMessage(outputMessages);
+    return outputMessages;
+  }
+
+  @Override
+  public List<SendMessage> executeCommand(InputMessage inputMessage, ExecutableCommand command) {
+    logger.info(String.format("Старт выполнение комманды: %s", command.getCommandName()));
+    List<SendMessage> outputMessages = command.execute(inputMessage.getChatId(), inputMessage.getText());
+    logger.info(String.format("Комманда: %s, выполнена", command.getCommandName()));
+    return outputMessages;
+  }
+
+  @Override
+  public void saveAnswer(Commands command, InputMessage inputMessage) {
+    String commandName = command.getCommandName();
+    if (Commands.MEETING.getName().equals(commandName)) {
+      String[] params = inputMessage.getText().split(" ");
+      userDBService.updateFirstAndLastName(inputMessage.getChatId(),params[0], params[1]);
+    } else if (Commands.MEETING.getName().equals(commandName)) {
+
+    }
   }
 }

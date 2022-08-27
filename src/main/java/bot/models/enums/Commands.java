@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public enum Commands {
   START("Старт общения","/start", new StartCommand(), Messages.START_MESSAGE.getMessage()),
-  HELP("Спрачоник", "/help", new HelpCommand(), Messages.QUESTION_HELP.getMessage()),
+  HELP("Справочник", "/help", new HelpCommand(), Messages.QUESTION_HELP.getMessage()),
   MEETING("Знакомство", "/meeting", new MeetingCommand(), Messages.QUESTION_ONE.getMessage());
 
   private final String name;
@@ -17,7 +17,12 @@ public enum Commands {
   private final ExecutableCommand command;
   private final String commandText;
 
-  public static ExecutableCommand getCommandByName(String name) throws UndefinedCommandException {
+  public static ExecutableCommand getExecutableCommandByName(String name) throws UndefinedCommandException {
+    Commands command = getCommandByName(name);
+    return command.getCommand();
+  }
+
+  public static Commands getCommandByName(String name) throws UndefinedCommandException {
     Commands command =  Arrays.stream(Commands.values())
         .filter(v -> v.getCommandName().equalsIgnoreCase(name))
         .findFirst()
@@ -25,7 +30,7 @@ public enum Commands {
     if (command == null) {
       throw new UndefinedCommandException(name);
     }
-    return command.getCommand();
+    return command;
   }
 
   Commands(String name, String commandName, ExecutableCommand command, String commandText) {

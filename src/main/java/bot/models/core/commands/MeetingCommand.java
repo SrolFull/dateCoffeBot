@@ -1,5 +1,6 @@
 package bot.models.core.commands;
 
+import bot.handler.BotHandler;
 import bot.models.core.ExecutableCommand;
 import bot.models.enums.Commands;
 import java.util.ArrayList;
@@ -9,6 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 public class MeetingCommand extends ExecutableCommand {
+
+  @Override
+  public Boolean isNeedWaitingResponse() {
+    return true;
+  }
+
   @Override
   public String getCommandName() {
     return Commands.MEETING.getName();
@@ -22,6 +29,7 @@ public class MeetingCommand extends ExecutableCommand {
   @Override
   public List<SendMessage> execute(Long chatId, String text) {
     List<SendMessage> list = new ArrayList<>();
+    BotHandler.isWaitingQuestionAnswer.put(chatId, isNeedWaitingResponse());
 
     SendMessage startMessage = new SendMessage();
     startMessage.setChatId(chatId);

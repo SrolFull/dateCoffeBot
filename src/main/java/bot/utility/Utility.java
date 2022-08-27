@@ -13,7 +13,7 @@ public class Utility {
 
   public static ExecutableCommand convertStringCommandToObjExecutableCommand(String commandName) {
     try {
-      return Commands.getCommandByName(commandName);
+      return Commands.getExecutableCommandByName(commandName);
     } catch (UndefinedCommandException exception) {
       logger.info("Не удалось преобразовать строковую комманду в обьект \n");
       logger.info("Вернули комманду старт");
