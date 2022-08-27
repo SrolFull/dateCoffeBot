@@ -31,9 +31,9 @@ public class CommandServiceImpl implements CommandService {
     List<SendMessage> outputMessages = new ArrayList<>();
     try {
       ExecutableCommand command = defineCommand(inputMessage.getText());
-      logger.info(String.format("Старт выполнение комманды: %s", command.getCommandName()));
+      logger.info(String.format("Старт выполнение комманды: %s", command.getName()));
       outputMessages = command.execute(inputMessage.getChatId(), inputMessage.getText());
-      logger.info(String.format("Комманда: %s, выполнена", command.getCommandName()));
+      logger.info(String.format("Комманда: %s, выполнена", command.getName()));
     } catch (UndefinedCommandException e) {
       logger.info("Неизвестная комманда: " + e.getName());
       SendMessage sendMessage = new SendMessage();
@@ -46,9 +46,9 @@ public class CommandServiceImpl implements CommandService {
 
   @Override
   public List<SendMessage> executeCommand(InputMessage inputMessage, ExecutableCommand command) {
-    logger.info(String.format("Старт выполнение комманды: %s", command.getCommandName()));
+    logger.info(String.format("Старт выполнение комманды: %s", command.getName()));
     List<SendMessage> outputMessages = command.execute(inputMessage.getChatId(), inputMessage.getText());
-    logger.info(String.format("Комманда: %s, выполнена", command.getCommandName()));
+    logger.info(String.format("Комманда: %s, выполнена", command.getName()));
     return outputMessages;
   }
 

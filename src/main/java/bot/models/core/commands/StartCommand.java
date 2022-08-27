@@ -17,8 +17,13 @@ public class StartCommand extends ExecutableCommand {
   }
 
   @Override
+  public String getName() {
+    return Commands.START.name();
+  }
+
+  @Override
   public String getCommandName() {
-    return Commands.START.getName();
+    return Commands.START.getCommandName();
   }
 
   @Override
@@ -34,14 +39,6 @@ public class StartCommand extends ExecutableCommand {
     SendMessage startMessage = new SendMessage();
     startMessage.setChatId(chatId);
     startMessage.setText(Commands.START.getCommandText());
-
-    list.add(startMessage);
-
-    SendMessage greetingMessage = new SendMessage();
-    greetingMessage.setChatId(chatId);
-    greetingMessage.setText(Commands.MEETING.getCommandText());
-
-    list.add(greetingMessage);
 
     return list;
   }

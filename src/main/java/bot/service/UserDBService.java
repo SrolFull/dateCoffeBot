@@ -24,7 +24,7 @@ public class UserDBService {
   private final Logger logger = LoggerFactory.getLogger(UserDBService.class);
 
   private final DateCoffeeRepository repository;
-  private Map<Long, ExecutableCommand> userLastCommandMap;
+  private Map<Long, ExecutableCommand> userLastCommandMap = new HashMap<>();
 
 
   public UserDBService(DateCoffeeRepository repository) {
@@ -51,7 +51,6 @@ public class UserDBService {
      userLastCommandMap = Maps.transformValues(rawMap, Utility::convertStringCommandToObjExecutableCommand);
     }
     logger.info("В базе нет ниодного пользователя");
-    userLastCommandMap = new HashMap<>();
   }
 
   @Transactional

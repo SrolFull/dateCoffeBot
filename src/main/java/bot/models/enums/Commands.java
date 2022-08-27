@@ -12,17 +12,17 @@ public enum Commands {
   HELP("Справочник", "/help", new HelpCommand(), Messages.QUESTION_HELP.getMessage()),
   MEETING("Знакомство", "/meeting", new MeetingCommand(), Messages.QUESTION_ONE.getMessage());
 
-  private final String name;
+  private final String description;
   private final String commandName;
   private final ExecutableCommand command;
   private final String commandText;
 
   public static ExecutableCommand getExecutableCommandByName(String name) throws UndefinedCommandException {
-    Commands command = getCommandByName(name);
+    Commands command = getCommandByCommandName(name);
     return command.getCommand();
   }
 
-  public static Commands getCommandByName(String name) throws UndefinedCommandException {
+  public static Commands getCommandByCommandName(String name) throws UndefinedCommandException {
     Commands command =  Arrays.stream(Commands.values())
         .filter(v -> v.getCommandName().equalsIgnoreCase(name))
         .findFirst()
@@ -33,8 +33,8 @@ public enum Commands {
     return command;
   }
 
-  Commands(String name, String commandName, ExecutableCommand command, String commandText) {
-    this.name = name;
+  Commands(String description, String commandName, ExecutableCommand command, String commandText) {
+    this.description = description;
     this.commandName = commandName;
     this.command = command;
     this.commandText = commandText;
@@ -42,7 +42,7 @@ public enum Commands {
 
 
   public String getName() {
-    return name;
+    return this.name();
   }
 
   public ExecutableCommand getCommand() {

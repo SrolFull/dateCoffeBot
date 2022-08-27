@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 public abstract class ExecutableCommand {
  public abstract Boolean isNeedWaitingResponse();
+ public abstract String getName();
  public abstract String getCommandName();
  public abstract Logger getLogger();
  public abstract List<SendMessage> execute(Long chatId, String commandText);

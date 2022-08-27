@@ -17,9 +17,15 @@ public class HelpCommand extends ExecutableCommand {
   }
 
   @Override
-  public String getCommandName() {
-    return Commands.HELP.getName();
+  public String getName() {
+    return Commands.HELP.name();
   }
+
+  @Override
+  public String getCommandName() {
+    return Commands.HELP.getCommandName();
+  }
+
 
   @Override
   public Logger getLogger() {

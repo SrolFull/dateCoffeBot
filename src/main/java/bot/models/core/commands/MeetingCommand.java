@@ -17,8 +17,13 @@ public class MeetingCommand extends ExecutableCommand {
   }
 
   @Override
+  public String getName() {
+    return Commands.MEETING.name();
+  }
+
+  @Override
   public String getCommandName() {
-    return Commands.MEETING.getName();
+    return Commands.MEETING.getCommandName();
   }
 
   @Override

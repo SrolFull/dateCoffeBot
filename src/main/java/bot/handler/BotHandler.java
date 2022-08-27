@@ -1,6 +1,5 @@
 package bot.handler;
 
-import bot.DateCoffeeBot;
 import bot.models.core.ExecutableCommand;
 import bot.models.core.InputMessage;
 import bot.models.core.exceptions.UndefinedCommandException;
@@ -8,6 +7,7 @@ import bot.models.enums.Commands;
 import bot.service.UserDBService;
 import bot.service.impl.CommandServiceImpl;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import lombok.SneakyThrows;
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
 public class BotHandler {
@@ -44,19 +43,25 @@ public class BotHandler {
   @SneakyThrows
   private List<SendMessage> handleUserAnswer(InputMessage inputMessage) {
     ExecutableCommand lastCommand = userDBService.getUserLastCommand(inputMessage.getChatId());
-    Commands command = Commands.getCommandByName(lastCommand.getCommandName());
+    Commands command = Commands.getCommandByCommandName(lastCommand.getCommandName());
     commandService.saveAnswer(command, inputMessage);
     ExecutableCommand nextCommand = lastCommand.getNextCommand();
     return commandService.executeCommand(inputMessage, nextCommand);
   }
 
   private List<SendMessage> handleUserCommand(InputMessage inputMessage) {
+    List<SendMessage> response = new LinkedList<>();
       try {
         ExecutableCommand executableCommand = commandService.defineCommand(inputMessage.getText());
         userDBService.updateUserLastCommand(inputMessage.getChatId(), executableCommand);
+        response = new LinkedList<>(commandService.executeCommand(inputMessage));
+        if (!isWaitingQuestionAnswer.get(inputMessage.getChatId()) && executableCommand.getNextCommand() != null) {
+          inputMessage.setText(executableCommand.getNextCommand().getCommandName());
+          response.addAll(handleUserCommand(inputMessage));
+        }
       } catch (UndefinedCommandException exception) {
         logger.debug("Не удалось определить комманду");
       }
-    return commandService.executeCommand(inputMessage);
+      return response;
   }
 }
