@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface DateCoffeeRepository extends JpaRepository<Users, Long> {
-  Users deleteUserById(Long id);
+  Users deleteUsersByChatId(Long id);
 
   @Query(value = "select chatId, currentCommand from Users")
   HashMap<Long, String> getAllChatIdAndCurrentCommand();
