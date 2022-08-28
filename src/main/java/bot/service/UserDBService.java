@@ -5,13 +5,11 @@ import bot.models.db.Users;
 import bot.repository.DateCoffeeRepository;
 import bot.utility.Utility;
 import com.google.common.collect.Maps;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.event.EventListener;
@@ -20,9 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Scope("singleton")
-public class UserDBService {
-  @Autowired
-  private UserService userService;
+public class UserDBService {;
   private final Logger logger = LoggerFactory.getLogger(UserDBService.class);
 
   private final DateCoffeeRepository repository;
@@ -65,56 +61,57 @@ public class UserDBService {
   public void updateFirstAndLastName(Long chatId, String firstName, String lastName) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
-          Users newUser = userService.updateFirstAndLastName(user1, firstName, lastName);
-          repository.save(newUser);
+          user1.setFirstName(firstName);
+          user1.setLastName(lastName);
+          repository.save(user1);
         });
   }
 
   public void updateUserPlace(Long chatId, String place) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
-          Users newUser = userService.updateUserPlace(user1, place);
-          repository.save(newUser);
+          user1.setWorkingPlaces(place);
+          repository.save(user1);
         });
   }
 
   public void updateUserLink(Long chatId, String text) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
-          Users newUser = userService.updateUserLink(user1, text);
-          repository.save(newUser);
+          user1.setProfile(text);
+          repository.save(user1);
         });
   }
 
   public void updateUserInterests(Long chatId, List<String> params) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
-          Users newUser = userService.updateUserInterests(user1, params);
-          repository.save(newUser);
+          user1.setInterests(params);
+          repository.save(user1);
         });
   }
 
   public void updateUserJob(Long chatId, String text) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
-          Users newUser = userService.updateUserJob(user1, text);
-          repository.save(newUser);
+          user1.setPosition(text);
+          repository.save(user1);
         });
   }
 
   public void updateUserGoal(Long chatId, String text) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
-          Users newUser = userService.updateUserGoal(user1, text);
-          repository.save(newUser);
+          user1.setGoals(text);
+          repository.save(user1);
         });
   }
 
   public void updateUserCurrentCommand(Long chatId, String text) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
-          Users newUser = userService.updateUserLastCommand(user1, text);
-          repository.save(newUser);
+          user1.setCurrentCommand(text);
+          repository.save(user1);
         });
   }
 
