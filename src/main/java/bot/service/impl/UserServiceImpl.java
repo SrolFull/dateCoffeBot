@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Users updateUserPlace(Users user1, String place) {
-    user1.setWorkingPlaces(WorkingPlaces.getByAddress(place));
+    user1.setWorkingPlaces(place);
     return user1;
   }
 
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Users updateUserGoal(Users user1, String text) {
-    user1.setGoals(Goals.getGoalByDescription(text));
+    user1.setGoals(text);
     return user1;
   }
 }
