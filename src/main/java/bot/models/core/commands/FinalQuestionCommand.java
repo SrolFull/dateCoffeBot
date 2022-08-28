@@ -37,7 +37,7 @@ public class FinalQuestionCommand extends ExecutableCommand {
     SendMessage sendMessage = new SendMessage();
     sendMessage.setChatId(chatId);
     sendMessage.setText(
-        String.format(Commands.FINAL_QUESTION.getCommandText(), commandText));
+        String.format("%s\n%s",Commands.FINAL_QUESTION.getCommandText(), commandText));
     return Collections.singletonList(sendMessage);
   }
 

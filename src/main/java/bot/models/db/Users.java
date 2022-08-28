@@ -33,12 +33,12 @@ public class Users {
 
   @Override
   public String toString() {
-    return "Имя" + firstName
-        + "Фамиля" + lastName
-        + "Ссылка на профиль" + profile
-        + "Интересы" + Utility.convertListToStringWithDelimiter(interests, ", ")
-        + "Ты работаешь" + position
-        + "Место работы" + workingPlaces.getAddress()
-        + "Цель встречи" + goals.getDescription();
+    return "\nИмя" + firstName
+        + "\nФамиля" + lastName
+        + "\nСсылка на профиль" + profile
+        + "\nИнтересы" + Utility.convertListToStringWithDelimiter(interests, ", ")
+        + "\nТы работаешь" + position
+        + "\nМесто работы" + workingPlaces.getAddress()
+        + "\nЦель встречи" + goals.getDescription();
   }
 }
