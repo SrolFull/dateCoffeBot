@@ -35,7 +35,7 @@ public class UserDBService {
 
 
   public Users addUser(Users users) {
-    return repository.saveAndFlush(users);
+    return repository.save(users);
   }
 
   public ExecutableCommand getUserLastCommand(Long chatId) {
@@ -60,7 +60,7 @@ public class UserDBService {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
           Users newUser = userService.updateFirstAndLastName(user1, firstName, lastName);
-          repository.saveAndFlush(newUser);
+          repository.save(newUser);
         });
   }
 
@@ -68,7 +68,7 @@ public class UserDBService {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
           Users newUser = userService.updateUserPlace(user1, place);
-          repository.saveAndFlush(newUser);
+          repository.save(newUser);
         });
   }
 
@@ -76,7 +76,7 @@ public class UserDBService {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
           Users newUser = userService.updateUserLink(user1, text);
-          repository.saveAndFlush(newUser);
+          repository.save(newUser);
         });
   }
 
@@ -84,7 +84,7 @@ public class UserDBService {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
           Users newUser = userService.updateUserInterests(user1, params);
-          repository.saveAndFlush(newUser);
+          repository.save(newUser);
         });
   }
 
@@ -92,7 +92,7 @@ public class UserDBService {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
           Users newUser = userService.updateUserJob(user1, text);
-          repository.saveAndFlush(newUser);
+          repository.save(newUser);
         });
   }
 
@@ -100,7 +100,7 @@ public class UserDBService {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
           Users newUser = userService.updateUserGoal(user1, text);
-          repository.saveAndFlush(newUser);
+          repository.save(newUser);
         });
   }
 

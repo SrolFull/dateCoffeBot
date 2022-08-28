@@ -41,6 +41,10 @@ public class Users {
   @Column(name = "current_command")
   private String currentCommand;
 
+  public Users(Long chatId) {
+    this.chatId = chatId;
+  }
+
   @Column(name = "chat_id")
   public Long getId() {
     return id;

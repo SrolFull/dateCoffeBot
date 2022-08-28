@@ -3,6 +3,7 @@ package bot.handler;
 import bot.models.core.ExecutableCommand;
 import bot.models.core.InputMessage;
 import bot.models.core.exceptions.UndefinedCommandException;
+import bot.models.db.Users;
 import bot.models.enums.Commands;
 import bot.service.UserDBService;
 import bot.service.impl.CommandServiceImpl;
@@ -56,6 +57,9 @@ public class BotHandler {
     List<SendMessage> response = new LinkedList<>();
       try {
         ExecutableCommand executableCommand = commandService.defineCommand(inputMessage.getText());
+        if (Commands.START.getName().equals(executableCommand.getName())) {
+          userDBService.addUser(new Users(inputMessage.getChatId()));
+        }
         response.addAll(commandService.executeCommand(inputMessage));
         if (!isWaitingQuestionAnswer.get(inputMessage.getChatId()) && executableCommand.getNextCommand() != null) {
           inputMessage.setText(executableCommand.getNextCommand().getCommandName());
