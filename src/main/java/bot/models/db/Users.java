@@ -45,6 +45,10 @@ public class Users {
     this.chatId = chatId;
   }
 
+  public Users() {
+
+  }
+
   @Column(name = "chat_id")
   public Long getId() {
     return id;
