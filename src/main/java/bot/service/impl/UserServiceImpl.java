@@ -46,4 +46,10 @@ public class UserServiceImpl implements UserService {
     user1.setGoals(text);
     return user1;
   }
+
+  @Override
+  public Users updateUserLastCommand(Users user1, String text) {
+    user1.setCurrentCommand(text);
+    return user1;
+  }
 }

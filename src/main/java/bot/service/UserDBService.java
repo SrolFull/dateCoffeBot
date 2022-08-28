@@ -34,8 +34,8 @@ public class UserDBService {
   }
 
 
-  public Users addNewUser(Long chatId) {
-    return repository.save(new Users(chatId));
+  public void addNewUser(Long chatId) {
+    repository.save(new Users(chatId));
   }
 
   public ExecutableCommand getUserLastCommand(Long chatId) {
@@ -43,12 +43,18 @@ public class UserDBService {
   }
 
   public void updateUserLastCommand(Long chatId, ExecutableCommand command) {
+    updateUserCurrentCommand(chatId, command.getName());
     userLastCommandMap.put(chatId, command);
   }
 
   @EventListener(ApplicationStartedEvent.class)
   public void fillUserLastCommandMap() {
-    Map<Long, String> rawMap = repository.getAllChatIdAndCurrentCommand();
+    HashMap<Long, String> rawMap = new HashMap<>();
+    try {
+       rawMap = repository.getAllChatIdAndCurrentCommand();
+    } catch (Exception e) {
+      logger.info("Ошибка при чтение последней команды на старте приложения");
+    }
     if (rawMap != null && !rawMap.isEmpty()) {
      userLastCommandMap = Maps.transformValues(rawMap, Utility::convertStringCommandToObjExecutableCommand);
     }
@@ -100,6 +106,14 @@ public class UserDBService {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
           Users newUser = userService.updateUserGoal(user1, text);
+          repository.save(newUser);
+        });
+  }
+
+  public void updateUserCurrentCommand(Long chatId, String text) {
+    repository.findByChatId(chatId)
+        .ifPresent(user1 -> {
+          Users newUser = userService.updateUserLastCommand(user1, text);
           repository.save(newUser);
         });
   }

@@ -14,4 +14,6 @@ public interface UserService {
   Users updateUserJob(Users user1, String text);
 
   Users updateUserGoal(Users user1, String text);
+
+  Users updateUserLastCommand(Users user1, String text);
 }
