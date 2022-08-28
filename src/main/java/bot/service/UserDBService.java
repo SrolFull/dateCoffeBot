@@ -34,8 +34,8 @@ public class UserDBService {
   }
 
 
-  public Users addUser(Users users) {
-    return repository.save(users);
+  public Users addNewUser(Long chatId) {
+    return repository.save(new Users(chatId));
   }
 
   public ExecutableCommand getUserLastCommand(Long chatId) {
