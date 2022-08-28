@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Scope("singleton")
-public class UserDBService {;
+public class UserDBService {
   private final Logger logger = LoggerFactory.getLogger(UserDBService.class);
 
   private final DateCoffeeRepository repository;
@@ -49,6 +49,7 @@ public class UserDBService {;
     try {
        rawMap = repository.getAllChatIdAndCurrentCommand();
     } catch (Exception e) {
+      //todo: разобраться
       logger.info("Ошибка при чтение последней команды на старте приложения");
     }
     if (rawMap != null && !rawMap.isEmpty()) {
