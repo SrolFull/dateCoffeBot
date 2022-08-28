@@ -3,6 +3,7 @@ package bot.models.core;
 import java.util.List;
 import org.slf4j.Logger;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 public abstract class ExecutableCommand {
  public abstract Boolean isNeedWaitingResponse();
@@ -14,6 +15,9 @@ public abstract class ExecutableCommand {
   return null;
  }
  public ExecutableCommand getPreviousCommand(){
+  return null;
+ }
+ public ReplyKeyboard getKeyboardMarkup() {
   return null;
  }
 }

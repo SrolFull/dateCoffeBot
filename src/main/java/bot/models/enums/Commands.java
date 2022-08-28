@@ -1,8 +1,14 @@
 package bot.models.enums;
 
 import bot.models.core.ExecutableCommand;
+import bot.models.core.commands.FinalQuestionCommand;
+import bot.models.core.commands.GoalQuestionsCommand;
 import bot.models.core.commands.HelpCommand;
+import bot.models.core.commands.InterestsQuestionCommand;
+import bot.models.core.commands.JobQuestionsCommand;
+import bot.models.core.commands.LinkQuestionCommand;
 import bot.models.core.commands.MeetingCommand;
+import bot.models.core.commands.PlaceQuestionCommand;
 import bot.models.core.commands.StartCommand;
 import bot.models.core.exceptions.UndefinedCommandException;
 import java.util.Arrays;
@@ -10,7 +16,14 @@ import java.util.Arrays;
 public enum Commands {
   START("Старт общения","/start", new StartCommand(), Messages.START_MESSAGE.getMessage()),
   HELP("Справочник", "/help", new HelpCommand(), Messages.QUESTION_HELP.getMessage()),
-  MEETING("Знакомство", "/meeting", new MeetingCommand(), Messages.QUESTION_ONE.getMessage());
+  MEETING("Знакомство", "/meeting", new MeetingCommand(), Messages.QUESTION_ONE.getMessage()),
+  PLACE_QUESTION("Место работы","place", new PlaceQuestionCommand(), Messages.QUESTION_TWO_TITLE.getMessage()),
+  LINK_QUESTION("Ссылки","links", new LinkQuestionCommand(), Messages.QUESTION_THREE.getMessage()),
+  INTERESTS_QUESTION("Интересы","interests", new InterestsQuestionCommand(), Messages.QUESTION_FOUR.getMessage()),
+  WHATS_YOUR_JOB_QUESTION("Работа","job" ,new JobQuestionsCommand(), Messages.QUESTION_FIVE.getMessage()),
+  GOAL_QUESTION("Цель","goal", new GoalQuestionsCommand(), Messages.QUESTION_SIX.getMessage()),
+  FINAL_QUESTION("Завершение опроса", "final", new FinalQuestionCommand(), Messages.QUESTION_FINAL.getMessage());
+
 
   private final String description;
   private final String commandName;

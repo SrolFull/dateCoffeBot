@@ -17,7 +17,7 @@ public class DateCoffeeBot extends TelegramLongPollingBot {
   private final Logger logger = LoggerFactory.getLogger(DateCoffeeBot.class);
 
   @Autowired
-  private BotConfig config;
+  private final BotConfig config;
   @Autowired
   private BotHandler botHandler;
 

@@ -4,6 +4,7 @@ import bot.models.core.ExecutableCommand;
 import bot.models.core.exceptions.UndefinedCommandException;
 import bot.models.enums.Commands;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,5 +26,14 @@ public class Utility {
     return commandsString.stream()
         .map(Utility::convertStringCommandToObjExecutableCommand)
         .collect(Collectors.toList());
+  }
+
+  public static String convertListToStringWithDelimiter(List<String> list, String delimeter) {
+    StringBuilder sb = new StringBuilder();
+    list.forEach(element -> {
+      sb.append(element);
+      sb.append(delimeter);
+    });
+    return sb.toString();
   }
 }

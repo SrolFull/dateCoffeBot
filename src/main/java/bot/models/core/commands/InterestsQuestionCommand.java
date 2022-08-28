@@ -1,16 +1,14 @@
 package bot.models.core.commands;
 
-import bot.handler.BotHandler;
 import bot.models.core.ExecutableCommand;
 import bot.models.enums.Commands;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
-public class MeetingCommand extends ExecutableCommand {
+public class InterestsQuestionCommand extends ExecutableCommand {
 
   @Override
   public Boolean isNeedWaitingResponse() {
@@ -19,7 +17,7 @@ public class MeetingCommand extends ExecutableCommand {
 
   @Override
   public String getName() {
-    return Commands.MEETING.name();
+    return Commands.INTERESTS_QUESTION.name();
   }
 
   @Override
@@ -29,30 +27,24 @@ public class MeetingCommand extends ExecutableCommand {
 
   @Override
   public Logger getLogger() {
-    return LoggerFactory.getLogger(MeetingCommand.class);
+    return LoggerFactory.getLogger(InterestsQuestionCommand.class);
   }
 
   @Override
-  public List<SendMessage> execute(Long chatId, String text) {
-    BotHandler.isWaitingQuestionAnswer.put(chatId, isNeedWaitingResponse());
-
+  public List<SendMessage> execute(Long chatId, String commandText) {
     SendMessage sendMessage = new SendMessage();
     sendMessage.setChatId(chatId);
-    sendMessage.setText(Commands.MEETING.getCommandText());
-
+    sendMessage.setText(Commands.INTERESTS_QUESTION.getCommandText());
     return Collections.singletonList(sendMessage);
   }
 
   @Override
   public ExecutableCommand getNextCommand() {
-    return Commands.PLACE_QUESTION.getCommand();
+    return Commands.WHATS_YOUR_JOB_QUESTION.getCommand();
   }
-
 
   @Override
   public ExecutableCommand getPreviousCommand() {
-    return Commands.START.getCommand();
+    return Commands.LINK_QUESTION.getCommand();
   }
-
-
 }

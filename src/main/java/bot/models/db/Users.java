@@ -1,16 +1,20 @@
 package bot.models.db;
 
 import bot.models.enums.WorkingPlaces;
-import java.util.Map;
+import bot.utility.Utility;
+import java.util.List;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import lombok.Data;
 import bot.models.enums.Goals;
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.commons.codec.binary.StringUtils;
 
-@Data
+@Getter
+@Setter
 @Entity
 public class Users {
   @Id
@@ -20,10 +24,21 @@ public class Users {
   private String lastName;
   private String profile;
   @ElementCollection()
-  private Map<String, Boolean> interests;
+  private List<String> interests;
   private String position;
   private Goals goals;
   private WorkingPlaces workingPlaces;
   private Long chatId;
   private String currentCommand;
+
+  @Override
+  public String toString() {
+    return "Имя" + firstName
+        + "Фамиля" + lastName
+        + "Ссылка на профиль" + profile
+        + "Интересы" + Utility.convertListToStringWithDelimiter(interests, ", ")
+        + "Ты работаешь" + position
+        + "Место работы" + workingPlaces.getAddress()
+        + "Цель встречи" + goals.getDescription();
+  }
 }

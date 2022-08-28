@@ -7,6 +7,7 @@ import bot.models.enums.Commands;
 import bot.service.CommandService;
 import bot.service.UserDBService;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,7 @@ public class CommandServiceImpl implements CommandService {
       logger.info(String.format("Старт выполнение комманды: %s", command.getName()));
       outputMessages = command.execute(inputMessage.getChatId(), inputMessage.getText());
       logger.info(String.format("Комманда: %s, выполнена", command.getName()));
+      userDBService.updateUserLastCommand(inputMessage.getChatId(), command);
     } catch (UndefinedCommandException e) {
       logger.info("Неизвестная комманда: " + e.getName());
       SendMessage sendMessage = new SendMessage();
@@ -46,9 +48,10 @@ public class CommandServiceImpl implements CommandService {
 
   @Override
   public List<SendMessage> executeCommand(InputMessage inputMessage, ExecutableCommand command) {
-    logger.info(String.format("Старт выполнение комманды: %s", command.getName()));
+    logger.debug(String.format("Старт выполнение комманды: %s", command.getName()));
     List<SendMessage> outputMessages = command.execute(inputMessage.getChatId(), inputMessage.getText());
-    logger.info(String.format("Комманда: %s, выполнена", command.getName()));
+    logger.debug(String.format("Комманда: %s, выполнена", command.getName()));
+    userDBService.updateUserLastCommand(inputMessage.getChatId(), command);
     return outputMessages;
   }
 
@@ -58,8 +61,17 @@ public class CommandServiceImpl implements CommandService {
     if (Commands.MEETING.getName().equals(commandName)) {
       String[] params = inputMessage.getText().split(" ");
       userDBService.updateFirstAndLastName(inputMessage.getChatId(),params[0], params[1]);
-    } else if (Commands.MEETING.getName().equals(commandName)) {
-
+    } else if (Commands.PLACE_QUESTION.getName().equals(commandName)) {
+      userDBService.updateUserPlace(inputMessage.getChatId(), inputMessage.getText());
+    } else if (Commands.LINK_QUESTION.getName().equals(commandName)) {
+      userDBService.updateUserLink(inputMessage.getChatId(), inputMessage.getText());
+    } else if (Commands.INTERESTS_QUESTION.getName().equals(commandName)) {
+      String[] params = inputMessage.getText().split(",");
+      userDBService.updateUserInterests(inputMessage.getChatId(), Arrays.asList(params));
+    } else if (Commands.WHATS_YOUR_JOB_QUESTION.getName().equals(commandName)) {
+      userDBService.updateUserJob(inputMessage.getChatId(), inputMessage.getText());
+    }else if (Commands.GOAL_QUESTION.getName().equals(commandName)) {
+      userDBService.updateUserGoal(inputMessage.getChatId(), inputMessage.getText());
     }
   }
 }
