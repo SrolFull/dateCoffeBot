@@ -7,17 +7,8 @@ import java.util.Collections;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-
-@Component
-@Scope("prototype")
 public class FinalQuestionCommand extends ExecutableCommand {
-
-  @Autowired
-  UserDBService userDBService;
 
   @Override
   public Boolean isNeedWaitingResponse() {
@@ -44,7 +35,7 @@ public class FinalQuestionCommand extends ExecutableCommand {
     SendMessage sendMessage = new SendMessage();
     sendMessage.setChatId(chatId);
     sendMessage.setText(
-        String.format(Commands.FINAL_QUESTION.getCommandText(), userDBService.getUserInfo(chatId)));
+        String.format(Commands.FINAL_QUESTION.getCommandText(), commandText));
     return Collections.singletonList(sendMessage);
   }
 

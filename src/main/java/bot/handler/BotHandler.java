@@ -46,6 +46,9 @@ public class BotHandler {
     Commands command = Commands.getCommandByCommandName(lastCommand.getCommandName());
     commandService.saveAnswer(command, inputMessage);
     ExecutableCommand nextCommand = lastCommand.getNextCommand();
+    if (Commands.FINAL_QUESTION.getName().equals(nextCommand.getName())) {
+      inputMessage.setText(userDBService.getUserInfo(inputMessage.getChatId()));
+    }
     return commandService.executeCommand(inputMessage, nextCommand);
   }
 
