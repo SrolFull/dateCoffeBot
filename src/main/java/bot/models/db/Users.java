@@ -1,15 +1,11 @@
 package bot.models.db;
 
-import bot.models.enums.WorkingPlaces;
 import bot.utility.Utility;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import bot.models.enums.Goals;
 import javax.persistence.Table;
 import lombok.Setter;
 
@@ -18,9 +14,8 @@ import lombok.Setter;
 @Table(name="tgUsers")
 public class Users {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "id")
-  private Long id;
+  @Column(name = "chat_id")
+  private Long chatId;
   @Column(name = "first_name")
   private String firstName;
   @Column(name = "last_name")
@@ -36,8 +31,6 @@ public class Users {
   private String goals;
   @Column(name = "workinPlace")
   private String workingPlaces;
-  @Column(name = "chat_id")
-  private Long chatId;
   @Column(name = "current_command")
   private String currentCommand;
 
@@ -48,12 +41,6 @@ public class Users {
   public Users() {
 
   }
-
-  @Column(name = "chat_id")
-  public Long getId() {
-    return id;
-  }
-
   public String getFirstName() {
     return firstName;
   }
