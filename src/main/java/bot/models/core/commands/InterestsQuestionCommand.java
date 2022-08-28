@@ -1,5 +1,6 @@
 package bot.models.core.commands;
 
+import bot.handler.BotHandler;
 import bot.models.core.ExecutableCommand;
 import bot.models.enums.Commands;
 import java.util.Collections;
@@ -32,6 +33,8 @@ public class InterestsQuestionCommand extends ExecutableCommand {
 
   @Override
   public List<SendMessage> execute(Long chatId, String commandText) {
+    BotHandler.isWaitingQuestionAnswer.put(chatId, isNeedWaitingResponse());
+
     SendMessage sendMessage = new SendMessage();
     sendMessage.setChatId(chatId);
     sendMessage.setText(Commands.INTERESTS_QUESTION.getCommandText());
