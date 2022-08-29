@@ -23,7 +23,7 @@ public class InterestsQuestionCommand extends ExecutableCommand {
 
   @Override
   public String getCommandName() {
-    return Commands.MEETING.getCommandName();
+    return Commands.INTERESTS_QUESTION.getCommandName();
   }
 
   @Override

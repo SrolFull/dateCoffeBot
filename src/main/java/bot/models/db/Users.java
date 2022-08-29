@@ -6,15 +6,16 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Setter;
 
 @Setter
 @Entity
-@Table(name="tgUsers")
+@Table(name="tg_users")
 public class Users {
   @Id
-  @Column(name = "chat_id")
+  @Column(name = "chat_id", unique = true)
   private Long chatId;
   @Column(name = "first_name")
   private String firstName;
@@ -22,14 +23,13 @@ public class Users {
   private String lastName;
   @Column(name = "profile")
   private String profile;
-  @ElementCollection()
-  @Column(name = "interests")
+  @ElementCollection
   private List<String> interests;
   @Column(name = "position")
   private String position;
   @Column(name = "goals")
   private String goals;
-  @Column(name = "workinPlace")
+  @Column(name = "working_place")
   private String workingPlaces;
   @Column(name = "current_command")
   private String currentCommand;
@@ -79,12 +79,12 @@ public class Users {
 
   @Override
   public String toString() {
-    return "\nИмя" + firstName
-        + "\nФамиля" + lastName
-        + "\nСсылка на профиль" + profile
-        + "\nИнтересы" + Utility.convertListToStringWithDelimiter(interests, ", ")
-        + "\nТы работаешь" + position
-        + "\nМесто работы" + workingPlaces
-        + "\nЦель встречи" + goals;
+    return "\nИмя: " + firstName
+        + "\nФамиля: " + lastName
+        + "\nСсылка на профиль: " + profile
+        + "\nИнтересы: " + Utility.convertListToStringWithDelimiter(interests, ", ")
+        + "\nТы работаешь: " + position
+        + "\nМесто работы: " + workingPlaces
+        + "\nЦель встречи: " + goals;
   }
 }

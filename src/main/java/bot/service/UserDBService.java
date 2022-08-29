@@ -1,6 +1,7 @@
 package bot.service;
 
 import bot.models.core.ExecutableCommand;
+import bot.models.db.IUserCommands;
 import bot.models.db.Users;
 import bot.repository.DateCoffeeRepository;
 import bot.utility.Utility;
@@ -8,6 +9,7 @@ import com.google.common.collect.Maps;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -29,6 +31,10 @@ public class UserDBService {
     this.repository = repository;
   }
 
+  private static boolean checkNull(IUserCommands command) {
+    return command.getId() != null && command.getCommand() != null;
+  }
+
   @Transactional
   public void addNewUser(Long chatId) {
     repository.save(new Users(chatId));
@@ -48,14 +54,12 @@ public class UserDBService {
 
   @EventListener(ApplicationStartedEvent.class)
   public void fillUserLastCommandMap() {
-    HashMap<Long, String> rawMap = new HashMap<>();
-    try {
-       rawMap = repository.getAllChatIdAndCurrentCommand();
-    } catch (Exception e) {
-      //todo: разобраться
-      logger.info("Ошибка при чтение последней команды на старте приложения");
-    }
-    if (rawMap != null && !rawMap.isEmpty()) {
+    Map<Long, String> rawMap;
+    List<IUserCommands> iUserCommands = repository.getAllChatIdAndCurrentCommand();
+    rawMap = iUserCommands.stream()
+        .filter(UserDBService::checkNull)
+        .collect(Collectors.toMap(IUserCommands::getId, IUserCommands::getCommand));
+    if (!rawMap.isEmpty()) {
      userLastCommandMap = Maps.transformValues(rawMap, Utility::convertStringCommandToObjExecutableCommand);
     }
     logger.info("В базе нет ниодного пользователя");

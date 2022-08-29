@@ -6,6 +6,7 @@ import bot.models.core.exceptions.UndefinedCommandException;
 import bot.models.enums.Commands;
 import bot.service.CommandService;
 import bot.service.UserDBService;
+import bot.utility.Utility;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -57,20 +58,19 @@ public class CommandServiceImpl implements CommandService {
 
   @Override
   public void saveAnswer(Commands command, InputMessage inputMessage) {
-    String commandName = command.getCommandName();
-    if (Commands.MEETING.getName().equals(commandName)) {
+    String commandName = command.getName();
+    if (Commands.MEETING.name().equals(commandName)) {
       String[] params = inputMessage.getText().split(" ");
       userDBService.updateFirstAndLastName(inputMessage.getChatId(),params[0], params[1]);
-    } else if (Commands.PLACE_QUESTION.getName().equals(commandName)) {
+    } else if (Commands.PLACE_QUESTION.name().equals(commandName)) {
       userDBService.updateUserPlace(inputMessage.getChatId(), inputMessage.getText());
-    } else if (Commands.LINK_QUESTION.getName().equals(commandName)) {
+    } else if (Commands.LINK_QUESTION.name().equals(commandName)) {
       userDBService.updateUserLink(inputMessage.getChatId(), inputMessage.getText());
-    } else if (Commands.INTERESTS_QUESTION.getName().equals(commandName)) {
-      String[] params = inputMessage.getText().split(",");
-      userDBService.updateUserInterests(inputMessage.getChatId(), Arrays.asList(params));
-    } else if (Commands.WHATS_YOUR_JOB_QUESTION.getName().equals(commandName)) {
+    } else if (Commands.INTERESTS_QUESTION.name().equals(commandName)) {
+      userDBService.updateUserInterests(inputMessage.getChatId(), Utility.convertStringToList(inputMessage.getText()));
+    } else if (Commands.WHATS_YOUR_JOB_QUESTION.name().equals(commandName)) {
       userDBService.updateUserJob(inputMessage.getChatId(), inputMessage.getText());
-    }else if (Commands.GOAL_QUESTION.getName().equals(commandName)) {
+    }else if (Commands.GOAL_QUESTION.name().equals(commandName)) {
       userDBService.updateUserGoal(inputMessage.getChatId(), inputMessage.getText());
     }
   }
