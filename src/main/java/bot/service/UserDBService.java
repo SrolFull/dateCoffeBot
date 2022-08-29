@@ -29,7 +29,7 @@ public class UserDBService {
     this.repository = repository;
   }
 
-
+  @Transactional
   public void addNewUser(Long chatId) {
     repository.save(new Users(chatId));
   }
@@ -38,7 +38,10 @@ public class UserDBService {
     return userLastCommandMap.get(chatId);
   }
 
+  @Transactional
   public void updateUserLastCommand(Long chatId, ExecutableCommand command) {
+    logger.debug(String.format("Обновление последнего шага: chatId = %s, комманда = command",
+        chatId, command));
     updateUserCurrentCommand(chatId, command.getName());
     userLastCommandMap.put(chatId, command);
   }
@@ -68,6 +71,7 @@ public class UserDBService {
         });
   }
 
+  @Transactional
   public void updateUserPlace(Long chatId, String place) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
@@ -76,6 +80,7 @@ public class UserDBService {
         });
   }
 
+  @Transactional
   public void updateUserLink(Long chatId, String text) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
@@ -84,6 +89,7 @@ public class UserDBService {
         });
   }
 
+  @Transactional
   public void updateUserInterests(Long chatId, List<String> params) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
@@ -92,6 +98,7 @@ public class UserDBService {
         });
   }
 
+  @Transactional
   public void updateUserJob(Long chatId, String text) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
@@ -100,6 +107,7 @@ public class UserDBService {
         });
   }
 
+  @Transactional
   public void updateUserGoal(Long chatId, String text) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
@@ -108,6 +116,7 @@ public class UserDBService {
         });
   }
 
+  @Transactional
   public void updateUserCurrentCommand(Long chatId, String text) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
@@ -116,6 +125,7 @@ public class UserDBService {
         });
   }
 
+  @Transactional
   public String getUserInfo(Long chatId) {
     Users user = repository.findByChatId(chatId).orElse(null);
     if (user == null) {
