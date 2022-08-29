@@ -48,8 +48,10 @@ public class UserDBService {
   public void updateUserLastCommand(Long chatId, ExecutableCommand command) {
     logger.debug(String.format("Обновление последнего шага: chatId = %s, комманда = %s",
         chatId, command));
-    updateUserCurrentCommand(chatId, command.getName());
-    userLastCommandMap.put(chatId, command);
+    if (command != null) {
+      updateUserCurrentCommand(chatId, command.getName());
+      userLastCommandMap.put(chatId, command);
+    }
   }
 
   @EventListener(ApplicationStartedEvent.class)
