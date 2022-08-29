@@ -46,7 +46,7 @@ public class UserDBService {
 
   @Transactional
   public void updateUserLastCommand(Long chatId, ExecutableCommand command) {
-    logger.debug(String.format("Обновление последнего шага: chatId = %s, комманда = command",
+    logger.debug(String.format("Обновление последнего шага: chatId = %s, комманда = %s",
         chatId, command));
     updateUserCurrentCommand(chatId, command.getName());
     userLastCommandMap.put(chatId, command);
