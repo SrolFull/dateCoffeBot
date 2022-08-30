@@ -49,5 +49,15 @@ public class DateCoffeeBot extends TelegramLongPollingBot {
              }
            });
     }
+    if (request.hasCallbackQuery()) {
+      botHandler.handleCallbackQuery(request.getCallbackQuery())
+          .forEach(message -> {
+        try {
+          execute(message);
+        } catch (TelegramApiException e) {
+          e.printStackTrace();
+        }
+      });
+    }
   }
 }

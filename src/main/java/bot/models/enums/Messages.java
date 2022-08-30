@@ -31,6 +31,7 @@ public enum Messages {
   QUESTION_FINAL("Получилось!\n"
       + "Ты – участник встреч Random Coffee блока Технологии в ЕкатеринбургеJ\n"
       + "Вот так будет выглядеть твой профиль в сообщении, которое получит твой собеседник:"),
+  SAVE_USER_INFO("Данные успешно сохранены"),
   QUESTION_HELP("Я овощ, мне нужна помощь");
   private final String message;
 

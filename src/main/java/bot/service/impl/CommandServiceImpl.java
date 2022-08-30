@@ -8,12 +8,12 @@ import bot.service.CommandService;
 import bot.service.UserDBService;
 import bot.utility.Utility;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 @Service
@@ -51,6 +51,15 @@ public class CommandServiceImpl implements CommandService {
   public List<SendMessage> executeCommand(InputMessage inputMessage, ExecutableCommand command) {
     logger.debug(String.format("Старт выполнение комманды: %s", command.getName()));
     List<SendMessage> outputMessages = command.execute(inputMessage.getChatId(), inputMessage.getText());
+    logger.debug(String.format("Комманда: %s, выполнена", command.getName()));
+    userDBService.updateUserLastCommand(inputMessage.getChatId(), command);
+    return outputMessages;
+  }
+
+  @Override
+  public List<AnswerCallbackQuery> executeCommand(InputMessage inputMessage, ExecutableCommand command, String id) {
+    logger.debug(String.format("Старт выполнение комманды: %s", command.getName()));
+    List<AnswerCallbackQuery> outputMessages = command.execute(inputMessage.getChatId(), inputMessage.getText(), id);
     logger.debug(String.format("Комманда: %s, выполнена", command.getName()));
     userDBService.updateUserLastCommand(inputMessage.getChatId(), command);
     return outputMessages;

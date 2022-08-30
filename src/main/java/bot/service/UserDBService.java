@@ -5,7 +5,6 @@ import bot.models.db.IUserCommands;
 import bot.models.db.Users;
 import bot.repository.DateCoffeeRepository;
 import bot.utility.Utility;
-import com.google.common.collect.Maps;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +61,10 @@ public class UserDBService {
         .filter(UserDBService::checkNull)
         .collect(Collectors.toMap(IUserCommands::getId, IUserCommands::getCommand));
     if (!rawMap.isEmpty()) {
-     userLastCommandMap = Maps.transformValues(rawMap, Utility::convertStringCommandToObjExecutableCommand);
+     rawMap.forEach((key, value) -> {
+       ExecutableCommand command = Utility.convertStringCommandToObjExecutableCommand(value);
+       userLastCommandMap.put(key, command);
+     });
     }
     logger.info("В базе нет ниодного пользователя");
   }

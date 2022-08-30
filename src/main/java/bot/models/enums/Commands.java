@@ -9,6 +9,7 @@ import bot.models.core.commands.JobQuestionsCommand;
 import bot.models.core.commands.LinkQuestionCommand;
 import bot.models.core.commands.MeetingCommand;
 import bot.models.core.commands.PlaceQuestionCommand;
+import bot.models.core.commands.SaveUserCommand;
 import bot.models.core.commands.StartCommand;
 import bot.models.core.exceptions.UndefinedCommandException;
 import java.util.Arrays;
@@ -22,8 +23,8 @@ public enum Commands {
   INTERESTS_QUESTION("Интересы","interests", new InterestsQuestionCommand(), Messages.QUESTION_FOUR.getMessage()),
   WHATS_YOUR_JOB_QUESTION("Работа","job" ,new JobQuestionsCommand(), Messages.QUESTION_FIVE.getMessage()),
   GOAL_QUESTION("Цель","goal", new GoalQuestionsCommand(), Messages.QUESTION_SIX.getMessage()),
-  FINAL_QUESTION("Завершение опроса", "final", new FinalQuestionCommand(), Messages.QUESTION_FINAL.getMessage());
-
+  FINAL_QUESTION("Завершение опроса", "final", new FinalQuestionCommand(), Messages.QUESTION_FINAL.getMessage()),
+  SAVE_USER("Сохранения данных пользователя", "save", new SaveUserCommand(), Messages.SAVE_USER_INFO.getMessage());
 
   private final String description;
   private final String commandName;

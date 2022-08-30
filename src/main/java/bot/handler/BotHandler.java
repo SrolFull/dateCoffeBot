@@ -3,7 +3,6 @@ package bot.handler;
 import bot.models.core.ExecutableCommand;
 import bot.models.core.InputMessage;
 import bot.models.core.exceptions.UndefinedCommandException;
-import bot.models.db.Users;
 import bot.models.enums.Commands;
 import bot.service.UserDBService;
 import bot.service.impl.CommandServiceImpl;
@@ -16,7 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Component
@@ -39,6 +40,13 @@ public class BotHandler {
     } else {
       return handleUserCommand(inputMessage);
     }
+  }
+
+  @SneakyThrows
+  public List<AnswerCallbackQuery> handleCallbackQuery(CallbackQuery message) {
+    Commands command = Commands.getCommandByCommandName(message.getData());
+    InputMessage inputMessage = new InputMessage(message.getFrom().getId(), message.getData());
+    return commandService.executeCommand(inputMessage, command.getCommand(), message.getId());
   }
 
   @SneakyThrows

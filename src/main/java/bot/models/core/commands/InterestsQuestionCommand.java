@@ -27,18 +27,13 @@ public class InterestsQuestionCommand extends ExecutableCommand {
   }
 
   @Override
-  public Logger getLogger() {
-    return LoggerFactory.getLogger(InterestsQuestionCommand.class);
+  public String getMessageText(String commandText) {
+    return Commands.INTERESTS_QUESTION.getCommandText();
   }
 
   @Override
-  public List<SendMessage> execute(Long chatId, String commandText) {
-    BotHandler.isWaitingQuestionAnswer.put(chatId, isNeedWaitingResponse());
-
-    SendMessage sendMessage = new SendMessage();
-    sendMessage.setChatId(chatId);
-    sendMessage.setText(Commands.INTERESTS_QUESTION.getCommandText());
-    return Collections.singletonList(sendMessage);
+  public Logger getLogger() {
+    return LoggerFactory.getLogger(InterestsQuestionCommand.class);
   }
 
   @Override

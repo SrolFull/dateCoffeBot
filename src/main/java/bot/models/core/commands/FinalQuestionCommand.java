@@ -1,18 +1,17 @@
 package bot.models.core.commands;
 
-import bot.handler.BotHandler;
 import bot.models.core.ExecutableCommand;
+import bot.models.enums.CallBackButtons;
 import bot.models.enums.Commands;
-import java.util.Collections;
-import java.util.List;
+import bot.models.enums.callbackBtns.FinalQuestionButtons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+
 public class FinalQuestionCommand extends ExecutableCommand {
 
   @Override
   public Boolean isNeedWaitingResponse() {
-    return false;
+    return true;
   }
 
   @Override
@@ -26,19 +25,23 @@ public class FinalQuestionCommand extends ExecutableCommand {
   }
 
   @Override
+  public String getMessageText(String commandText) {
+    return String.format("%s\n%s", Commands.FINAL_QUESTION.getCommandText(), commandText);
+  }
+
+  @Override
   public Logger getLogger() {
     return LoggerFactory.getLogger(GoalQuestionsCommand.class);
   }
 
   @Override
-  public List<SendMessage> execute(Long chatId, String commandText) {
-    BotHandler.isWaitingQuestionAnswer.put(chatId, isNeedWaitingResponse());
+  public CallBackButtons[] getCallbackBtns() {
+    return FinalQuestionButtons.values();
+  }
 
-    SendMessage sendMessage = new SendMessage();
-    sendMessage.setChatId(chatId);
-    sendMessage.setText(
-        String.format("%s\n%s",Commands.FINAL_QUESTION.getCommandText(), commandText));
-    return Collections.singletonList(sendMessage);
+  @Override
+  public ExecutableCommand getNextCommand() {
+    return new SaveUserCommand();
   }
 
   @Override
