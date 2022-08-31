@@ -40,6 +40,11 @@ public class GoalQuestionsCommand extends ExecutableCommand {
   }
 
   @Override
+  public Boolean needKeyboard() {
+    return true;
+  }
+
+  @Override
   public ExecutableCommand getNextCommand() {
     return Commands.FINAL_QUESTION.getCommand();
   }

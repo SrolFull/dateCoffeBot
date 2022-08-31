@@ -3,10 +3,8 @@ package bot.models.core.commands;
 import bot.models.core.ExecutableCommand;
 import bot.models.enums.CallBackButtons;
 import bot.models.enums.Commands;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 
 public class SaveUserCommand extends ExecutableCommand {
 
@@ -36,6 +34,11 @@ public class SaveUserCommand extends ExecutableCommand {
   }
 
   @Override
+  public Boolean needKeyboard() {
+    return true;
+  }
+
+  @Override
   public CallBackButtons[] getCallbackBtns() {
     return super.getCallbackBtns();
   }
@@ -48,10 +51,5 @@ public class SaveUserCommand extends ExecutableCommand {
   @Override
   public ExecutableCommand getPreviousCommand() {
     return super.getPreviousCommand();
-  }
-
-  @Override
-  public List<AnswerCallbackQuery> execute(Long chatId, String text, String id) {
-    return super.execute(chatId, text, id);
   }
 }

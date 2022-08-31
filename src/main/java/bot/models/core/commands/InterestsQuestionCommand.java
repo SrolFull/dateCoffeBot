@@ -1,13 +1,9 @@
 package bot.models.core.commands;
 
-import bot.handler.BotHandler;
 import bot.models.core.ExecutableCommand;
 import bot.models.enums.Commands;
-import java.util.Collections;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 public class InterestsQuestionCommand extends ExecutableCommand {
 
@@ -34,6 +30,11 @@ public class InterestsQuestionCommand extends ExecutableCommand {
   @Override
   public Logger getLogger() {
     return LoggerFactory.getLogger(InterestsQuestionCommand.class);
+  }
+
+  @Override
+  public Boolean needKeyboard() {
+    return false;
   }
 
   @Override

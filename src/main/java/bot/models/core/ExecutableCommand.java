@@ -23,6 +23,7 @@ public abstract class ExecutableCommand {
  public abstract String getCommandName();
  public abstract String getMessageText(String commandText);
  public abstract Logger getLogger();
+ public abstract Boolean needKeyboard();
 
  /**
   * @see WritingButtons
@@ -53,6 +54,9 @@ public abstract class ExecutableCommand {
   SendMessage sendMessage = new SendMessage();
   sendMessage.setChatId(chatId);
   sendMessage.setText(getMessageText(commandText));
+  if (!needKeyboard()) {
+   return Collections.singletonList(sendMessage);
+  }
   if (Commands.FINAL_QUESTION.getName().equals(this.getName())) {
    sendMessage.setReplyMarkup(getInlineKeyboardMarkup());
   } else {

@@ -35,6 +35,11 @@ public class FinalQuestionCommand extends ExecutableCommand {
   }
 
   @Override
+  public Boolean needKeyboard() {
+    return true;
+  }
+
+  @Override
   public CallBackButtons[] getCallbackBtns() {
     return FinalQuestionButtons.values();
   }

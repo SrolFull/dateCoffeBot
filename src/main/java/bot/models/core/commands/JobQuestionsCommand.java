@@ -33,6 +33,11 @@ public class JobQuestionsCommand extends ExecutableCommand {
   }
 
   @Override
+  public Boolean needKeyboard() {
+    return false;
+  }
+
+  @Override
   public ExecutableCommand getNextCommand() {
     return Commands.GOAL_QUESTION.getCommand();
   }

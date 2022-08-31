@@ -33,6 +33,11 @@ public class LinkQuestionCommand extends ExecutableCommand {
   }
 
   @Override
+  public Boolean needKeyboard() {
+    return false;
+  }
+
+  @Override
   public ExecutableCommand getNextCommand() {
     return Commands.INTERESTS_QUESTION.getCommand();
   }

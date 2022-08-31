@@ -36,6 +36,11 @@ public class PlaceQuestionCommand extends ExecutableCommand {
   }
 
   @Override
+  public Boolean needKeyboard() {
+    return true;
+  }
+
+  @Override
   public WritingButtons[] getWritingBtns() {
     return PlaceQuestionButtons.values();
   }
