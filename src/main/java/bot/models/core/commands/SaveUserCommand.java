@@ -1,8 +1,9 @@
 package bot.models.core.commands;
 
 import bot.models.core.ExecutableCommand;
-import bot.models.enums.CallBackButtons;
 import bot.models.enums.Commands;
+import bot.models.enums.Emoji;
+import com.vdurmont.emoji.EmojiParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +26,15 @@ public class SaveUserCommand extends ExecutableCommand {
 
   @Override
   public String getMessageText(String commandText) {
-    return null;
+    String successSave = "Данные успешно сохранены";
+    return EmojiParser.parseToUnicode(
+        String.format("%s \n\n%s %s", commandText, successSave, Emoji.WHITE_CHECK_MARK.getCode())
+    );
+  }
+
+  @Override
+  public ExecutableCommand getPreviousCommand() {
+    return Commands.FINAL_QUESTION.getCommand();
   }
 
   @Override
@@ -35,21 +44,6 @@ public class SaveUserCommand extends ExecutableCommand {
 
   @Override
   public Boolean needKeyboard() {
-    return true;
-  }
-
-  @Override
-  public CallBackButtons[] getCallbackBtns() {
-    return super.getCallbackBtns();
-  }
-
-  @Override
-  public ExecutableCommand getNextCommand() {
-    return super.getNextCommand();
-  }
-
-  @Override
-  public ExecutableCommand getPreviousCommand() {
-    return super.getPreviousCommand();
+    return false;
   }
 }

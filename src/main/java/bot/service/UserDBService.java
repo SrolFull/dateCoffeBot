@@ -34,7 +34,7 @@ public class UserDBService {
     return command.getId() != null && command.getCommand() != null;
   }
 
-  @Transactional
+
   public void addNewUser(Long chatId) {
     repository.save(new Users(chatId));
   }
@@ -43,12 +43,12 @@ public class UserDBService {
     return userLastCommandMap.get(chatId);
   }
 
-  @Transactional
+
   public void updateUserLastCommand(Long chatId, ExecutableCommand command) {
     logger.debug(String.format("Обновление последнего шага: chatId = %s, комманда = %s",
         chatId, command));
     if (command != null) {
-      updateUserCurrentCommand(chatId, command.getName());
+      updateUserCurrentCommand(chatId, command.getCommandName());
       userLastCommandMap.put(chatId, command);
     }
   }
@@ -65,11 +65,12 @@ public class UserDBService {
        ExecutableCommand command = Utility.convertStringCommandToObjExecutableCommand(value);
        userLastCommandMap.put(key, command);
      });
+    } else {
+      logger.info("В базе нет ниодного пользователя");
     }
-    logger.info("В базе нет ниодного пользователя");
   }
 
-  @Transactional
+
   public void updateFirstAndLastName(Long chatId, String firstName, String lastName) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
@@ -79,7 +80,7 @@ public class UserDBService {
         });
   }
 
-  @Transactional
+
   public void updateUserPlace(Long chatId, String place) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
@@ -88,7 +89,7 @@ public class UserDBService {
         });
   }
 
-  @Transactional
+
   public void updateUserLink(Long chatId, String text) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
@@ -97,7 +98,7 @@ public class UserDBService {
         });
   }
 
-  @Transactional
+
   public void updateUserInterests(Long chatId, List<String> params) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
@@ -106,7 +107,7 @@ public class UserDBService {
         });
   }
 
-  @Transactional
+
   public void updateUserJob(Long chatId, String text) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
@@ -115,7 +116,7 @@ public class UserDBService {
         });
   }
 
-  @Transactional
+
   public void updateUserGoal(Long chatId, String text) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {
@@ -124,7 +125,7 @@ public class UserDBService {
         });
   }
 
-  @Transactional
+
   public void updateUserCurrentCommand(Long chatId, String text) {
     repository.findByChatId(chatId)
         .ifPresent(user1 -> {

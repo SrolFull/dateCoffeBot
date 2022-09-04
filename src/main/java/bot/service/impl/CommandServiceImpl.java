@@ -9,12 +9,13 @@ import bot.service.UserDBService;
 import bot.utility.Utility;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 
 @Service
 public class CommandServiceImpl implements CommandService {
@@ -57,17 +58,18 @@ public class CommandServiceImpl implements CommandService {
   }
 
   @Override
-  public List<AnswerCallbackQuery> executeCommand(InputMessage inputMessage, ExecutableCommand command, String id) {
+  @SneakyThrows
+  public List<EditMessageText> executeCommand(InputMessage inputMessage, ExecutableCommand command, Integer id) {
     logger.debug(String.format("Старт выполнение комманды: %s", command.getName()));
-    List<AnswerCallbackQuery> outputMessages = command.execute(inputMessage.getChatId(), inputMessage.getText(), id);
+    List<EditMessageText> outputMessages = command.execute(inputMessage.getChatId(), inputMessage.getText(), id);
+    saveAnswer(command.getName(), inputMessage);
     logger.debug(String.format("Комманда: %s, выполнена", command.getName()));
     userDBService.updateUserLastCommand(inputMessage.getChatId(), command);
     return outputMessages;
   }
 
   @Override
-  public void saveAnswer(Commands command, InputMessage inputMessage) {
-    String commandName = command.getName();
+  public void saveAnswer(String commandName, InputMessage inputMessage) {
     if (Commands.MEETING.name().equals(commandName)) {
       String[] params = inputMessage.getText().split(" ");
       userDBService.updateFirstAndLastName(inputMessage.getChatId(),params[0], params[1]);

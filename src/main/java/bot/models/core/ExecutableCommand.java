@@ -9,8 +9,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import org.slf4j.Logger;
-import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -24,7 +24,6 @@ public abstract class ExecutableCommand {
  public abstract String getMessageText(String commandText);
  public abstract Logger getLogger();
  public abstract Boolean needKeyboard();
-
  /**
   * @see WritingButtons
   * @return
@@ -45,8 +44,8 @@ public abstract class ExecutableCommand {
  /**
   * Execute command with ReplyKeyboard send message in chat
   * @see #getWritingBtns() you shold override this
-  * @param chatId
-  * @param commandText
+  * @param chatId - ид чата
+  * @param commandText - Команда/ответ на команду
   * @return
   */
  public List<SendMessage> execute(Long chatId, String commandText) {
@@ -68,17 +67,25 @@ public abstract class ExecutableCommand {
  /**
   * Execute command with InlineKeyboard return Query
   * @see #getCallbackBtns() you shold override this
-  * @param chatId
-  * @param text
-  * @param id
+  * @param chatId - ид чата
+  * @param text - callback msg
+  * @param id - id callbackQuery
   * @return
   */
- public List<AnswerCallbackQuery> execute(Long chatId, String text, String id) {
+ public List<EditMessageText> execute(Long chatId, String text, Integer id) {
   BotHandler.isWaitingQuestionAnswer.put(chatId, isNeedWaitingResponse());
- //todo: аполнить
-  AnswerCallbackQuery answer = new AnswerCallbackQuery();
-  //answer.setText(getMessageText(commandText));
-  return Collections.singletonList(answer);
+  List<EditMessageText> answer = new LinkedList<>();
+
+  EditMessageText editMessageText = new EditMessageText();
+  editMessageText.setChatId(chatId);
+  editMessageText.setMessageId(id);
+  editMessageText.setText(getMessageText(text));
+  if (needKeyboard()) {
+   editMessageText.setReplyMarkup(getInlineKeyboardMarkup());
+  }
+
+  answer.add(editMessageText);
+  return answer;
  }
 
 
@@ -91,7 +98,7 @@ public abstract class ExecutableCommand {
   return keyboardMarkup;
  }
 
- private ReplyKeyboard getInlineKeyboardMarkup() {
+ private InlineKeyboardMarkup getInlineKeyboardMarkup() {
   InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
   keyboardMarkup.setKeyboard(getInlineKeyboardBtns());
   return keyboardMarkup;

@@ -15,8 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -43,17 +43,17 @@ public class BotHandler {
   }
 
   @SneakyThrows
-  public List<AnswerCallbackQuery> handleCallbackQuery(CallbackQuery message) {
+  public List<EditMessageText> handleCallbackQuery(CallbackQuery message) {
     Commands command = Commands.getCommandByCommandName(message.getData());
-    InputMessage inputMessage = new InputMessage(message.getFrom().getId(), message.getData());
-    return commandService.executeCommand(inputMessage, command.getCommand(), message.getId());
+    InputMessage inputMessage = new InputMessage(message.getFrom().getId(), message.getMessage().getText());
+    return commandService.executeCommand(inputMessage, command.getCommand(), message.getMessage().getMessageId());
   }
 
   @SneakyThrows
   private List<SendMessage> handleUserAnswer(InputMessage inputMessage) {
     ExecutableCommand lastCommand = userDBService.getUserLastCommand(inputMessage.getChatId());
     Commands command = Commands.getCommandByCommandName(lastCommand.getCommandName());
-    commandService.saveAnswer(command, inputMessage);
+    commandService.saveAnswer(command.name(), inputMessage);
     ExecutableCommand nextCommand = lastCommand.getNextCommand();
     if (Commands.FINAL_QUESTION.getName().equals(nextCommand.getName())) {
       inputMessage.setText(userDBService.getUserInfo(inputMessage.getChatId()));
