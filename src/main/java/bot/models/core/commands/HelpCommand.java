@@ -24,7 +24,7 @@ public class HelpCommand extends ExecutableCommand {
 
   @Override
   public String getMessageText(String commandText) {
-    return Commands.START.getCommandText();
+    return Commands.HELP.getCommandText();
   }
 
   @Override
